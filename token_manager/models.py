@@ -2,9 +2,7 @@ import django_jalali.db.models as jmodels
 from django.contrib.auth import get_user_model
 
 from django.db import models
-from rest_framework import status
-from rest_framework.exceptions import ValidationError, AuthenticationFailed
-from rest_framework.response import Response
+from rest_framework.exceptions import AuthenticationFailed
 
 NUM_ALLOWED_TOKENS_FOR_USER = 3
 

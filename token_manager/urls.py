@@ -5,7 +5,7 @@ from .views import *
 
 router = routers.DefaultRouter()
 
-router.register(r'manage', JSONWebTokenView, base_name='manage_tokens')
+router.register(r'manage', JSONWebTokenView, basename='manage_tokens')
 
 
 urlpatterns = [

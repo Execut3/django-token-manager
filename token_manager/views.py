@@ -69,14 +69,14 @@ class JSONWebTokenAPIView(APIView):
             payload = jwt_decode_handler(token)
             lookup_id = payload.get('lookup_id')
             token_lookup = TokenLookUpID.objects.filter(user__id=user.id, id=lookup_id).first()
-            if token_lookup:
-                response_data.update({
-                    'extra': {
-                        'r_type': token_lookup.r_type, 'ip': token_lookup.ip,
-                        'device': token_lookup.device, 'os': token_lookup.os,
-                        'browser': token_lookup.browser, 'created_at': str(token_lookup.created_at),
-                    }
-                })
+            # if token_lookup:
+            #     response_data.update({
+            #         'extra': {
+            #             'r_type': token_lookup.r_type, 'ip': token_lookup.ip,
+            #             'device': token_lookup.device, 'os': token_lookup.os,
+            #             'browser': token_lookup.browser, 'created_at': str(token_lookup.created_at),
+            #         }
+            #     })
 
             response = Response(response_data)
             if api_settings.JWT_AUTH_COOKIE:

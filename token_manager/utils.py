@@ -146,14 +146,14 @@ def jwt_response_payload_handler(token, user=None, request=None):
         }
 
     """
-    from permission.utils import get_user_permissions
-    from user_management.serializers import UserSerializer
-    user_data = UserSerializer().to_representation(user)
-    user_data['balance'] = user.wallet.balance
+    # from permission.utils import get_user_permissions
+    # from user_management.serializers import UserSerializer
+    # user_data = UserSerializer().to_representation(user)
+    # user_data['balance'] = user.wallet.balance
     return {
         'token': token,
-        'user': user_data,
-        'permissions': get_user_permissions(user)
+        # 'user': user_data,
+        # 'permissions': get_user_permissions(user)
     }
 
 

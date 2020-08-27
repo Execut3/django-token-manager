@@ -8,7 +8,7 @@ from rest_framework.authentication import (
     BaseAuthentication, get_authorization_header
 )
 
-from rest_framework_jwt.settings import api_settings
+from .settings import api_settings
 from .models import TokenLookUpID
 
 jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
