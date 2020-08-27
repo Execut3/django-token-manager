@@ -6,10 +6,11 @@ README = open(os.path.join(here, 'README.md')).read()
 
 setup(
     name='django-token-manager',
-    version='1.0',
+    version='1.1.0',
     packages=['token_manager'],
     description='A Django Rest Token Authentication system like telegram which will be using JWT as core with extended features.',
     long_description=README,
+    long_description_content_type='text/markdown',
     author='Execut3',
     author_email='execut3.binarycodes@gmail.com',
     url='https://github.com/Execut3/django-token-manager',

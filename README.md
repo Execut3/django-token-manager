@@ -46,12 +46,13 @@ $ pip install django-token-manager
 
 ### Usage
 Now register app in your `settings.py` file.
+
 ```
 INSTALLED_APPS = [
-    ...,
     "token_manager",
 ]
 ```
+
 
 In your `settings.py`, add `JSONWebTokenAuthentication` to Django REST framework's `DEFAULT_AUTHENTICATION_CLASSES`.
 ```

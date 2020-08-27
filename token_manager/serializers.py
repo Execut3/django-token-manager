@@ -51,7 +51,8 @@ class JSONWebTokenSerializer(Serializer):
 
             if user:
                 if not user.is_active:
-                    msg = 'حساب کاربری فعال نیست.'
+                    # msg = 'حساب کاربری فعال نیست.'
+                    msg = 'Account is not active.'
                     raise serializers.ValidationError(msg)
 
                 request = self.context.get('request', None)
@@ -65,7 +66,8 @@ class JSONWebTokenSerializer(Serializer):
                     'user': user
                 }
             else:
-                msg = 'امکان ورود با اطلاعات ارائه شده وجود ندارد.'
+                # msg = 'امکان ورود با اطلاعات ارائه شده وجود ندارد.'
+                msg = 'Unable to login with provided credentials.'
                 raise serializers.ValidationError(msg)
         else:
             msg = _('Must include "{username_field}" and "password".')
@@ -156,8 +158,8 @@ class VerifyJSONWebTokenSerializer(VerificationBaseSerializer):
                 'token': token,
                 'user': user
             }
-        else:
-            raise ValidationError('توکن دیگر معتبر نیست.')
+        # raise ValidationError('توکن دیگر معتبر نیست.')
+        raise ValidationError('Token is not valid anymore!')
 
 
 class VerifyJSONWebTokenPrivateSerializer(VerifyJSONWebTokenSerializer):
