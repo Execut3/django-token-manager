@@ -1,8 +1,10 @@
 import django_jalali.db.models as jmodels
-from django.contrib.auth import get_user_model
 
 from django.db import models
 from rest_framework.exceptions import AuthenticationFailed
+
+from django.contrib.auth import get_user_model
+
 
 NUM_ALLOWED_TOKENS_FOR_USER = 3
 
