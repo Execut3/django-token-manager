@@ -6,7 +6,7 @@ README = open(os.path.join(here, 'README.md')).read()
 
 setup(
     name='django-token-manager',
-    version='1.1.0',
+    version='1.1.2',
     packages=['token_manager'],
     description='A Django Rest Token Authentication system like telegram which will be using JWT as core with extended features.',
     long_description=README,
@@ -21,5 +21,8 @@ setup(
         'django-jalali>=3.1.0',
         'django-rest-captcha==0.1.0',
         'django-user-agents>=0.3.2',
-    ]
+    ],
+    package_data={
+        'token_manager': ['migrations/*'],
+    },
 )

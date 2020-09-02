@@ -187,8 +187,6 @@ def fetch_user_from_token(token):
     except Exception as e:
         print(e)
         return None
-    finally:
-        return None
 
 
 def get_client_ip(request):
