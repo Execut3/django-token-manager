@@ -122,7 +122,7 @@ class JSONWebTokenView(mixins.RetrieveModelMixin,
 
     def get_queryset(self):
         request_user = self.request.user
-        queryset = TokenLookUpID.objects.all()
+        queryset = TokenLookUpID.objects.all().select_related('user')
 
         if not request_user.is_staff:
             queryset = TokenLookUpID.objects.filter(user__id=request_user.id)
