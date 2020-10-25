@@ -172,7 +172,7 @@ def delete_all_user_tokens(user_id):
 
 def fetch_user_from_token(token):
     """
-    This method simply, just retreive token as an argument, then tries to validate token and if the token is available,
+    This method simply, just retrieve token as an argument, then tries to validate token and if the token is available,
     Then will return the corresponded user of it.
     :param token:
     :return:
