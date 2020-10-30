@@ -56,11 +56,11 @@ class TokenLookUpID(models.Model):
     # user_id = models.IntegerField(db_index=True)
     user = models.ForeignKey(User, db_index=True, on_delete=models.CASCADE)
 
-    ip = models.CharField(max_length=20, null=True, blank=True)
+    ip = models.CharField(max_length=30, null=True, blank=True)
     os = models.CharField(max_length=300, null=True, blank=True)
-    r_type = models.CharField(max_length=20, null=True, blank=True)
-    device = models.CharField(max_length=20, null=True, blank=True)
-    browser = models.CharField(max_length=30, null=True, blank=True)
+    r_type = models.CharField(max_length=100, null=True, blank=True)
+    device = models.CharField(max_length=100, null=True, blank=True)
+    browser = models.CharField(max_length=100, null=True, blank=True)
 
     created_at = jmodels.jDateTimeField(auto_now_add=True)
     updated_at = jmodels.jDateTimeField(auto_now=True)
@@ -72,3 +72,4 @@ class TokenLookUpID(models.Model):
 
     def __str__(self):
         return '{}, {}'.format(self.user.get_full_name(), self.id)
+
