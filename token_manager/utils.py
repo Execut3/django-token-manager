@@ -11,6 +11,7 @@ from rest_framework_jwt.compat import get_username
 from rest_framework_jwt.compat import get_username_field
 from rest_framework_jwt.settings import api_settings
 
+from .consts import DeviceTypeChoice
 from .models import TokenLookUpID
 
 User = get_user_model()
@@ -33,7 +34,7 @@ def jwt_get_secret_key(payload=None):
     return api_settings.JWT_SECRET_KEY
 
 
-def jwt_payload_handler(user, ip, r_type, browser, os, device):
+def jwt_payload_handler(user, ip, device_type, browser, os, device):
     username_field = get_username_field()
     username = get_username(user)
 
@@ -44,7 +45,7 @@ def jwt_payload_handler(user, ip, r_type, browser, os, device):
     )
 
     # Create a lookupID for this user, also check if it exceeded max allowed or other situations...
-    lookup_id = TokenLookUpID.objects.create_token(user, ip, r_type, browser, os, device)
+    lookup_id = TokenLookUpID.objects.create_token(user, ip, device_type, browser, os, device)
 
     try:
         user.last_login = datetime.now()
@@ -172,8 +173,9 @@ def delete_all_user_tokens(user_id):
 
 def fetch_user_from_token(token):
     """
-    This method simply, just retrieve token as an argument, then tries to validate token and if the token is available,
-    Then will return the corresponded user of it.
+    This method simply, just retrieve token as an argument,
+    Then tries to validate token and if the token is valid,
+    Will return the corresponded user of it.
     :param token:
     :return:
     """
@@ -199,28 +201,20 @@ def get_client_ip(request):
 
 
 def fetch_user_agent_info(user_agent):
-    if type(user_agent) == str:
-        r_type = user_agent
-        browser = 'Other'
-        os = user_agent
-        device = user_agent
-        return r_type, browser, os, device
 
     try:
         if user_agent.is_mobile:
-            r_type = 'mobile'
+            device_type = DeviceTypeChoice.Mobile
         elif user_agent.is_tablet:
-            r_type = 'tablet'
-        elif user_agent.is_touch_capable:
-            r_type = 'touch_capable'
+            device_type = DeviceTypeChoice.Tablet
         elif user_agent.is_pc:
-            r_type = 'pc'
+            device_type = DeviceTypeChoice.PC
         elif user_agent.is_bot:
-            r_type = 'bot'
+            device_type = DeviceTypeChoice.Bot
         else:
-            r_type = 'other'
+            device_type = DeviceTypeChoice.Other
     except:
-        r_type = 'other'
+        device_type = DeviceTypeChoice.Other
 
     # Accessing user agent's browser attributes
     try:
@@ -240,22 +234,22 @@ def fetch_user_agent_info(user_agent):
     except:
         device = 'Other'
 
-    return r_type, browser, os, device
+    return device_type, browser, os, device
 
 
 def fetch_request_extra_info(request):
     custom_useragent = request.META.get('HTTP_USERAGENT', '')
     custom_machinehost = request.META.get('HTTP_MACHINE_HOST_NAME', '')
     if custom_machinehost or custom_useragent:
-        r_type, browser, os, device = custom_useragent, custom_useragent, custom_useragent, custom_machinehost
+        device_type, browser, os, device = custom_useragent, custom_useragent, custom_useragent, custom_machinehost
     else:
         user_agent = request.user_agent
-        r_type, browser, os, device = fetch_user_agent_info(user_agent)
+        device_type, browser, os, device = fetch_user_agent_info(user_agent)
     ip = get_client_ip(request)
-    return ip, r_type, browser, os, device
+    return ip, device_type, browser, os, device
 
 
 def get_token_from_request(request, user):
-    ip, r_type, browser, os, device = fetch_request_extra_info(request)
-    payload, _ = jwt_payload_handler(user, ip, r_type, browser, os, device)
+    ip, device_type, browser, os, device = fetch_request_extra_info(request)
+    payload, _ = jwt_payload_handler(user, ip, device_type, browser, os, device)
     return jwt_encode_handler(payload)

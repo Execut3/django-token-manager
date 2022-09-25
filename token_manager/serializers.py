@@ -1,7 +1,6 @@
 import jwt
 from django.contrib.auth import authenticate, get_user_model
 from django.utils.translation import ugettext as _
-from rest_captcha.serializers import RestCaptchaSerializer
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -51,22 +50,20 @@ class JSONWebTokenSerializer(Serializer):
 
             if user:
                 if not user.is_active:
-                    # msg = 'حساب کاربری فعال نیست.'
                     msg = 'Account is not active.'
                     raise serializers.ValidationError(msg)
 
                 request = self.context.get('request', None)
 
-                ip, r_type, browser, os, device = fetch_request_extra_info(request)
+                ip, device_type, browser, os, device = fetch_request_extra_info(request)
 
-                payload, lookup_id = jwt_payload_handler(user, ip, r_type, browser, os, device)
+                payload, lookup_id = jwt_payload_handler(user, ip, device_type, browser, os, device)
 
                 return {
                     'token': jwt_encode_handler(payload),
                     'user': user
                 }
             else:
-                # msg = 'امکان ورود با اطلاعات ارائه شده وجود ندارد.'
                 msg = 'Unable to login with provided credentials.'
                 raise serializers.ValidationError(msg)
         else:
@@ -158,7 +155,6 @@ class VerifyJSONWebTokenSerializer(VerificationBaseSerializer):
                 'token': token,
                 'user': user
             }
-        # raise ValidationError('توکن دیگر معتبر نیست.')
         raise ValidationError('Token is not valid anymore!')
 
 
@@ -192,5 +188,9 @@ class LookUpIDSerializer(serializers.ModelSerializer):
 
 
 class DeleteListOfTokenSerializer(serializers.Serializer):
-    id_list = serializers.PrimaryKeyRelatedField(queryset=TokenLookUpID.objects.all(), many=True,
-                                                 required=True, allow_empty=False)
+    id_list = serializers.PrimaryKeyRelatedField(
+        many=True,
+        required=True,
+        allow_empty=False,
+        queryset=TokenLookUpID.objects.all(),
+    )

@@ -8,11 +8,10 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from .models import TokenLookUpID
-from .serializers import (
-    JSONWebTokenSerializer, VerifyJSONWebTokenSerializer, LookUpIDSerializer,
-    DeleteListOfTokenSerializer, JSONWebTokenWithCaptchaSerializer)
+from .serializers import JSONWebTokenSerializer, VerifyJSONWebTokenSerializer, LookUpIDSerializer, \
+    DeleteListOfTokenSerializer, JSONWebTokenWithCaptchaSerializer
 from .settings import api_settings
-from .utils import jwt_decode_handler, get_lookup_id_from_request
+from .utils import get_lookup_id_from_request
 
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
@@ -64,20 +63,6 @@ class JSONWebTokenAPIView(APIView):
             token = serializer.object.get('token')
 
             response_data = jwt_response_payload_handler(token, user, request)
-
-            # get lookup_id from payload
-            # payload = jwt_decode_handler(token)
-            # lookup_id = payload.get('lookup_id')
-            # token_lookup = TokenLookUpID.objects.filter(user__id=user.id, id=lookup_id).first()
-            # if token_lookup:
-            #     response_data.update({
-            #         'extra': {
-            #             'r_type': token_lookup.r_type, 'ip': token_lookup.ip,
-            #             'device': token_lookup.device, 'os': token_lookup.os,
-            #             'browser': token_lookup.browser, 'created_at': str(token_lookup.created_at),
-            #         }
-            #     })
-
             response = Response(response_data)
             if api_settings.JWT_AUTH_COOKIE:
                 expiration = (datetime.utcnow() +
@@ -136,7 +121,6 @@ class JSONWebTokenView(mixins.RetrieveModelMixin,
         obj = super(JSONWebTokenView, self).get_object()
         if self.request.user == obj.user or self.request.user.is_staff:
             return obj
-        # raise ValidationError('دسترسی لازم به این توکن را ندارید.')
         raise ValidationError('You don\'t have access to this token!')
 
     @action(detail=False, methods=['post'], url_path='delete-list', serializer_class=DeleteListOfTokenSerializer)
@@ -163,14 +147,12 @@ class JSONWebTokenView(mixins.RetrieveModelMixin,
             if not self.request.user.is_staff:
                 for u in token_users:
                     if not self.request.user == u:
-                        # raise ValidationError('شما دسترسی لازم برای حذف این توکن‌ها را ندارید.')
                         raise ValidationError('You don\'t have required permissions to do this operation!')
 
             count = len(tokens)
             for token in tokens:
                 token.delete()
 
-            # return Response('تعداد {} توکن با موفقیت حذف شدند.'.format(count), status=status.HTTP_204_NO_CONTENT)
             return Response('Total {} tokens removed successfully.'.format(count), status=status.HTTP_204_NO_CONTENT)
 
         return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
@@ -188,9 +170,7 @@ class RemoveTokenView(APIView):
             token.delete()
         except Exception as e:
             print(e)
-            # raise ValidationError('کاربر وارد نشده است')
             raise ValidationError('User is not login!')
-        # return Response({'status_code': 200, 'message': 'کاربر با موفقیت خارج شد.'})
         return Response({'status_code': 200, 'message': 'User successfully exited.'})
 
     def post(self, request, *args, **kwargs):
@@ -200,9 +180,7 @@ class RemoveTokenView(APIView):
             token.delete()
         except Exception as e:
             print(e)
-            # raise ValidationError('کاربر وارد نشده است')
             raise ValidationError('User is not login!')
-        # return Response({'status_code': 200, 'message': 'کاربر با موفقیت خارج شد.'})
         return Response({'status_code': 200, 'message': 'User successfully exited.'})
 
 

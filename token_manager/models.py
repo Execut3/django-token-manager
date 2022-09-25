@@ -9,53 +9,91 @@ User = get_user_model()
 
 class TokenLookUpIDManager(models.Manager):
 
-    def create_token(self, user, ip, r_type, browser, os, device):
-        user_tokens_queryset = self.filter(user=user)
+    def create_token(self, user, **kwargs):
+        """
+        Manager method to create a token based on provided info and requested user.
+
+        :param user: user that we wants the token be generated for.
+        :param kwargs: including args like: ip, os, browser, device, device_type
+        :return:
+        """
+        qs = self.filter(user=user)
 
         # First check if this user has exceeded maximum allowed tokens or not!
-        if user_tokens_queryset.count() >= NUM_ALLOWED_TOKENS_FOR_USER:
+        if qs.count() >= NUM_ALLOWED_TOKENS_FOR_USER:
             # If this happened. remove latest token and create a new one
 
             if not user.is_staff:
-                last_tokens = user_tokens_queryset.order_by('-created_at')[:NUM_ALLOWED_TOKENS_FOR_USER-1]
-
-                for token in user_tokens_queryset.exclude(id__in=last_tokens):
-                    token.delete()
+                # Only keep allowed_tokens and remove the rest.
+                last_tokens = qs.order_by('-created_at').values_list('id', flat=True)[:NUM_ALLOWED_TOKENS_FOR_USER - 1]
+                remove_qs = qs.exclude(id__in=last_tokens)
+                remove_qs.delete()
 
         # Now create a new user and assign an ID to it.
-        return self.create(user=user, ip=ip, os=os[:30], browser=browser[:30],
-                           device=device[:30], r_type=r_type[:30])
+        return self.create(
+            user=user,
+            ip=kwargs.get('ip', ''),
+            os=kwargs.get('os', ''),
+            device=kwargs.get('device', ''),
+            browser=kwargs.get('browser', ''),
+            device_type=kwargs.get('device_type', '')
+        )
 
     def check_token(self, user_id, lookup_id):
+        """
+        Manager method to check if token is valid or not.
+        """
         if self.filter(user__id=user_id, id=lookup_id).exists():
             return True
-        raise AuthenticationFailed('توکن معتبر نیست.')
+        raise AuthenticationFailed('Token is not valid')
 
 
 class TokenLookUpID(models.Model):
     """
-    This is the main model to control tokens generated with jwt.\
-    because of jwt, we don't have control on tokens after expire or user revoke.\
-    So we map each created jwt token to an instance of this model.\
-
-    For example if we define that only 3 active tokens\
-    should be created for each user. we do as follow:
-        - First create a jwt token for user, but first create\
-        a lookupID for it and store that id in payload of jwt.
-        - Then each time a request came with jwt, check payload\
-        and see the provided lookup_id is in list of\
-        lookupIDs for that user (max 3 is defined for this case)
-        - each time user revoked this token or has been expired,\
-        then remove lookup_id or assign a new one on jwt refresh.
+    Main Model to control Tokens.
+    The problem in JWT is that we can't control it,
+    Once created Can't be deleted unless the expiration time arrives.
     """
-    # user_id = models.IntegerField(db_index=True)
-    user = models.ForeignKey(User, db_index=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        to=User,
+        db_index=True,
+        on_delete=models.CASCADE,
+    )
 
-    ip = models.CharField(max_length=30, null=True, blank=True)
-    os = models.CharField(max_length=300, null=True, blank=True)
-    r_type = models.CharField(max_length=100, null=True, blank=True)
-    device = models.CharField(max_length=100, null=True, blank=True)
-    browser = models.CharField(max_length=100, null=True, blank=True)
+    ip = models.CharField(
+        null=True,
+        blank=True,
+        max_length=15,
+        verbose_name='IP Address'
+    )
+    os = models.CharField(
+        null=True,
+        blank=True,
+        max_length=300,
+        verbose_name='OS Name',
+        help_text='ex: Android',
+    )
+    device_type = models.CharField(
+        null=True,
+        blank=True,
+        max_length=6,
+        help_text='ex: Mobile',
+        verbose_name='Device Type',
+        choices=DeviceTypeChoice.CHOICES,
+    )
+    device = models.CharField(
+        null=True,
+        blank=True,
+        max_length=100,
+        verbose_name='Device',
+        help_text='ex: Samsung SM-A505F'
+    )
+    browser = models.CharField(
+        null=True,
+        blank=True,
+        max_length=100,
+        help_text='ex: Chrome Mobile WebView 103.0.50'
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -67,4 +105,3 @@ class TokenLookUpID(models.Model):
 
     def __str__(self):
         return '{}, {}'.format(self.user.get_full_name(), self.id)
-
