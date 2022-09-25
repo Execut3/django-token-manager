@@ -1,13 +1,8 @@
-import django_jalali.db.models as jmodels
-
 from django.db import models
+from django.contrib.auth import get_user_model
 from rest_framework.exceptions import AuthenticationFailed
 
-from django.contrib.auth import get_user_model
-
-
-NUM_ALLOWED_TOKENS_FOR_USER = 3
-
+from .consts import *
 
 User = get_user_model()
 
@@ -62,8 +57,8 @@ class TokenLookUpID(models.Model):
     device = models.CharField(max_length=100, null=True, blank=True)
     browser = models.CharField(max_length=100, null=True, blank=True)
 
-    created_at = jmodels.jDateTimeField(auto_now_add=True)
-    updated_at = jmodels.jDateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     objects = TokenLookUpIDManager()
 
