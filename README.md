@@ -4,10 +4,10 @@ A Django Rest Token Authentication system like telegram which will be using JWT 
 
 ### Features
 
-- Validation of tokens first with jwt algorithms to filter not valid token formats, before hitting database.
-- Able to see list of active tokens of each user_id
-- Able to delete each token if needed
-- Able to remove all other tokens of each users and keep just existing one
+- Before query database, check if token is in correct jwt format.
+- Get list of tokens for each user
+- Delete specific token 
+- Delete all active tokens of user except active token
 - Fetch useful info for each token request like os, ip and ...
 
 ### Why django-token-manager
