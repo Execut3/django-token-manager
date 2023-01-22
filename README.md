@@ -42,7 +42,7 @@ used with minor changes in structure.
 
 install using pip:
 ```
-$ pip install django-token-manager
+pip install django-token-manager
 ```
 
 ### Usage
