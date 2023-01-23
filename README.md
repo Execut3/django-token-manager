@@ -1,9 +1,8 @@
 # django-token-manager
-A Django Rest Token Authentication system like telegram which will be using JWT as core with extended features. 
+A Django Rest Token Authentication system like telegram which will be using JWT with full control on tokens.
 
 
 ### Features
-
 - Validation of tokens first with jwt algorithms to filter not valid token formats, before hitting database.
 - Able to see list of active tokens of each user_id
 - Able to delete each token if needed

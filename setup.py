@@ -8,7 +8,7 @@ setup(
     name='django-token-manager',
     version='1.1.2',
     packages=['token_manager'],
-    description='A Django Rest Token Authentication system like telegram which will be using JWT as core with extended features.',
+    description='A Django Rest Authentication Backend with Full control on Tokens',
     long_description=README,
     long_description_content_type='text/markdown',
     author='Execut3',
