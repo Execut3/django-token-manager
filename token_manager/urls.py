@@ -14,5 +14,4 @@ urlpatterns = [
     url(r'^logout/', logout_view, name='logout_view'),
 
     url(r'^', include(router.urls)),
-
 ]

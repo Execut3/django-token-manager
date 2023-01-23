@@ -18,7 +18,6 @@ setup(
     install_requires=[
         'Django>=2.0',
         'djangorestframework>=3.0',
-        'django-jalali>=3.1.0',
         'django-rest-captcha==0.1.0',
         'django-user-agents>=0.3.2',
     ],

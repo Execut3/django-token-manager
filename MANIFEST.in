@@ -2,4 +2,4 @@ include *.txt *.ini *.cfg *.rst
 recursive-include token_manager *.ico *.png *.css *.gif *.jpg *.txt *.js *.html *.xml
 include LICENSE
 include README.rst
-recursive-include token_manager/migrations *.py
+recursive-include token_manager/migrations token_manager/tests *.py
