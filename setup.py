@@ -16,6 +16,7 @@ setup(
     url='https://github.com/Execut3/django-token-manager',
     license='GPT',
     install_requires=[
+        'PyJWT>=1.7',
         'Django>=2.0',
         'djangorestframework>=3.0',
         'django-rest-captcha==0.1.0',

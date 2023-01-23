@@ -7,9 +7,9 @@ from django.contrib.auth import get_user_model
 from calendar import timegm
 from datetime import datetime
 
-from rest_framework_jwt.compat import get_username
-from rest_framework_jwt.compat import get_username_field
-from rest_framework_jwt.settings import api_settings
+from .compat import get_username
+from .compat import get_username_field
+from .settings import api_settings
 
 from .consts import DeviceTypeChoice
 from .models import TokenLookUpID
