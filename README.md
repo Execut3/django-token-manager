@@ -12,7 +12,7 @@ A Django Rest Token Authentication system like telegram which will be using JWT 
 ### Why django-token-manager
 **Reason** to use this module is that by default if you are using jwt system for
 token authorization of client, you don't have control on existing tokens.
-Of course you can set a expire date for each token. But if the expiration date isn't arrived yet,
+Of course, you can set an expiry date for each token. But if the expiration date isn't arrived yet,
 you can't delete this token. 
 What happens if you want to delete all sessions of a user. With jwt you don't have control on it, and you 
 should wait for expiration of token to be arrived.
@@ -27,7 +27,7 @@ if the jwt token is valid, will just query on a db_index ed field `lookup_id`.
 ### Requirements
 
 To use this package following needed. if not provided will be installed automatically.
-```
+```bash
 Django>=2.0
 djangorestframework>=3.0
 django-jalali>=3.1.0
@@ -40,24 +40,23 @@ django-rest-captcha>=0.1.0
 used with minor changes in structure.
 
 install using pip:
-```
+```bash
 pip install django-token-manager
 ```
 
 ### Usage
 Now register app in your `settings.py` file.
 
-```
+```python
 INSTALLED_APPS = [
     "token_manager",
 ]
 ```
 
-
 In your `settings.py`, add `JSONWebTokenAuthentication` to Django REST framework's `DEFAULT_AUTHENTICATION_CLASSES`.
-```
+```python
 REST_FRAMEWORK = {
-    ...,
+    #...,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'token_manager.authentication.JSONWebTokenAuthentication',
         ...
@@ -67,15 +66,15 @@ REST_FRAMEWORK = {
 
 This package uses `user-agents` package for fetching user agent info like device OS, IP address and ...
 So you should register below to be able to use it:
-```
+```python
 MIDDLEWARE = [
-    ...,
+    #...,
     'django_user_agents.middleware.UserAgentMiddleware',
 ]
 ```
 
 Remember to apply migration files in database:
-```
+```bash
 python manage.py migrate
 ```
 
