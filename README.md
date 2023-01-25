@@ -1,5 +1,5 @@
 # django-token-manager
-A Django Rest Token Authentication system like telegram which will be using JWT with full control on tokens.
+A Django Rest Token-Based Authentication Application using JWT with full control on tokens. 
 
 
 ### Features
