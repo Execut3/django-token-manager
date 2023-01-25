@@ -30,7 +30,6 @@ To use this package following needed. if not provided will be installed automati
 ```bash
 Django>=2.0
 djangorestframework>=3.0
-django-jalali>=3.1.0
 django-rest-captcha>=0.1.0
 ```
 
