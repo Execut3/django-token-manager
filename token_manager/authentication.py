@@ -15,18 +15,6 @@ jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 jwt_get_username_from_payload = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
 
 
-class FakeAuthentication(BaseAuthentication):
-
-    def authenticate(self, request):
-        User = get_user_model()
-        user, _ = User.objects.get_or_create(username='test')
-        if not user.is_superuser:
-            user.is_superuser = True
-            user.is_staff = True
-            user.save()
-        return (user, None)
-
-
 class BaseJSONWebTokenAuthentication(BaseAuthentication):
     """
     Token based authentication using the JSON Web Token standard.

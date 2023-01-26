@@ -9,7 +9,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from .models import TokenLookUpID
 from .serializers import JSONWebTokenSerializer, VerifyJSONWebTokenSerializer, LookUpIDSerializer, \
-    DeleteListOfTokenSerializer, JSONWebTokenWithCaptchaSerializer
+    DeleteListOfTokenSerializer
 from .settings import api_settings
 from .utils import get_lookup_id_from_request
 
@@ -83,11 +83,6 @@ class ObtainJSONWebToken(JSONWebTokenAPIView):
     Returns a JSON Web Token that can be used for authenticated requests.
     """
     serializer_class = JSONWebTokenSerializer
-
-
-class ObtainJSONWebTokenAdmin(ObtainJSONWebToken):
-
-    serializer_class = JSONWebTokenWithCaptchaSerializer
 
 
 class VerifyJSONWebToken(JSONWebTokenAPIView):
@@ -188,5 +183,4 @@ logout_view = RemoveTokenView.as_view()
 
 
 obtain_jwt_token = ObtainJSONWebToken.as_view()
-obtain_jwt_token_admin = ObtainJSONWebTokenAdmin.as_view()
 verify_jwt_token = VerifyJSONWebToken.as_view()

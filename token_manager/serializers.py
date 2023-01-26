@@ -72,11 +72,6 @@ class JSONWebTokenSerializer(Serializer):
             raise serializers.ValidationError(msg)
 
 
-# class JSONWebTokenWithCaptchaSerializer(RestCaptchaSerializer, JSONWebTokenSerializer):
-class JSONWebTokenWithCaptchaSerializer(JSONWebTokenSerializer):
-    pass
-
-
 class VerificationBaseSerializer(Serializer):
     """
     Abstract serializer used for verifying and refreshing JWTs.
@@ -156,14 +151,6 @@ class VerifyJSONWebTokenSerializer(VerificationBaseSerializer):
                 'user': user
             }
         raise ValidationError('Token is not valid anymore!')
-
-
-class VerifyJSONWebTokenPrivateSerializer(VerifyJSONWebTokenSerializer):
-
-    def post_task_after_token_valid(self, token_obj):
-        pass
-
-    # private = True
 
 
 class LookUpIDSerializer(serializers.ModelSerializer):
