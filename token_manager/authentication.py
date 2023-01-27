@@ -48,9 +48,11 @@ class BaseJSONWebTokenAuthentication(BaseAuthentication):
         """
         Returns an active user that matches the payload's user id and email.
         """
+        lookup_id = payload.get('lookup_id', 0)
+        user_id = payload.get('user_id', 0)
 
         # First check if this token is available in database and is assigned to any user.
-        TokenLookUpID.objects.check_token(user_id=payload.get('user_id', 0), lookup_id=payload.get('lookup_id', 0))
+        TokenLookUpID.objects.check_token(user_id=user_id, lookup_id=lookup_id)
 
         User = get_user_model()
         username = jwt_get_username_from_payload(payload)

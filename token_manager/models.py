@@ -13,7 +13,7 @@ class TokenLookUpIDManager(models.Manager):
         """
         Manager method to create a token based on provided info and requested user.
 
-        :param user: user that we wants the token be generated for.
+        :param user: user that we want the token be generated for.
         :param kwargs: including args like: ip, os, browser, device, device_type
         :return:
         """
@@ -43,6 +43,8 @@ class TokenLookUpIDManager(models.Manager):
         """
         Manager method to check if token is valid or not.
         """
+        if not user_id or not lookup_id:
+            raise AuthenticationFailed('Token is not valid')
         if self.filter(user__id=user_id, id=lookup_id).exists():
             return True
         raise AuthenticationFailed('Token is not valid')
@@ -104,4 +106,4 @@ class TokenLookUpID(models.Model):
         db_table = 'token_manager_lookup_id'
 
     def __str__(self):
-        return '{}, {}'.format(self.user.get_full_name(), self.id)
+        return f'{self.user.get_full_name()}, {self.id}'
