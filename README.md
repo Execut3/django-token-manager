@@ -23,7 +23,6 @@ Then payload lookup_id will be checked on database and if available will give ac
 And with this solution no need to query on a big string (session string) on database, 
 if the jwt token is valid, will just query on a db_index ed field `lookup_id`.
 
-
 ### Requirements
 
 To use this package following needed. if not provided will be installed automatically.
