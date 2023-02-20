@@ -76,11 +76,11 @@ Remember to apply migration files in database:
 python manage.py migrate
 ```
 
-To get token:
+working example to get Token for authentication.
 ```bash
 curl -X POST -d "username=admin&password=admin" "http://localhost:8000/token/get/"
 ```
-Verify token:
+And to get list of tokens, Send current token via `Authorization` header to `token/manage/` endpoit to get list of tokens.
 ```bash
 curl -H "Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb29rdXBfaWQiOjUsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJleHAiOjE1OTg1MjY4MjEsImVtYWlsIjoiIn0.l6JyGgAs_hBRejX1BpvA7PjubM2m89lV35PTVUBnV_I" "http://localhost:8000/token/manage/"
 ```
