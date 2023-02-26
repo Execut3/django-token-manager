@@ -1,5 +1,5 @@
 # django-token-manager
-A Django Rest Token-Based Authentication Application using JWT with full control on tokens. 
+A Django Rest Token-Based Authentication App using JWT with full control on tokens. 
 
 
 ### Features
